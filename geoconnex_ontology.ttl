@@ -1,0 +1,438 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix geoconnex: <https://geoconnex.us/def/> .
+@prefix hyf: <https://www.opengis.net/def/schema/hy_features/hyf/> .
+@prefix hyf-app: <https://www.opengis.net/def/appschema/hy_features/hyf/> .
+@prefix hyfo: <http://hyfo.spatialai.org/v1/hyfo#> .
+@prefix nhdplusv2: <http://nhdplusv2.spatialai.org/v1/nhdplusv2#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sf: <http://www.opengis.net/ont/sf#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://geoconnex.us/def/geoconnex-alignment>
+    a owl:Ontology ;
+    dcterms:title "Geoconnex alignment recommendations"@en ;
+    dcterms:description
+        "Recommended RDFS/OWL alignment axioms for an incomplete inventory of Geoconnex graph classes and properties. The ontology aligns hydrologic features with SawGraph/HY_Features, spatial descriptions with GeoSPARQL and Simple Features, web discovery metadata with Schema.org and DCAT, and observations/quantities with SOSA/SSN and QUDT."@en ;
+    dcterms:created "2026-06-02"^^xsd:date ;
+    owl:imports <http://purl.org/spatialai/spatial/water-full> ;
+    rdfs:seeAlso
+        <https://github.com/SAWGraph/water-kg/blob/main/ontologies/sawgraph-water-ontology.ttl> ,
+        <https://schema.org/> ,
+        <http://www.opengis.net/ont/geosparql> ,
+        <http://www.w3.org/ns/dcat#> ,
+        <http://www.w3.org/ns/sosa/> ,
+        <http://qudt.org/schema/qudt/> .
+
+#################################################################
+# Normalization notes
+#################################################################
+
+<http://schema.org/Organization>
+    owl:equivalentClass schema:Organization ;
+    skos:editorialNote "Normalize to https://schema.org/Organization in Geoconnex exports."@en .
+
+<http://schema.org/Person>
+    owl:equivalentClass schema:Person ;
+    skos:editorialNote "Normalize to https://schema.org/Person in Geoconnex exports."@en .
+
+<http://schema.org/WebPage>
+    owl:equivalentClass schema:WebPage ;
+    skos:editorialNote "Normalize to https://schema.org/WebPage in Geoconnex exports."@en .
+
+<http://schema.org/WebSite>
+    owl:equivalentClass schema:WebSite ;
+    skos:editorialNote "Normalize to https://schema.org/WebSite in Geoconnex exports."@en .
+
+<http://schema.org/BreadcrumbList>
+    owl:equivalentClass schema:BreadcrumbList ;
+    skos:editorialNote "Normalize to https://schema.org/BreadcrumbList in Geoconnex exports."@en .
+
+<http://schema.org/ListItem>
+    owl:equivalentClass schema:ListItem ;
+    skos:editorialNote "Normalize to https://schema.org/ListItem in Geoconnex exports."@en .
+
+<http://schema.org/NewsArticle>
+    owl:equivalentClass schema:NewsArticle ;
+    skos:editorialNote "Normalize to https://schema.org/NewsArticle in Geoconnex exports."@en .
+
+<http://schema.org/logo>
+    owl:equivalentProperty schema:logo ;
+    skos:editorialNote "Normalize to https://schema.org/logo in Geoconnex exports."@en .
+
+schema:logo
+    a owl:ObjectProperty ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( schema:ImageObject rdfs:Resource )
+    ] ;
+    skos:editorialNote "Model logos as resource links, preferably to a schema:ImageObject or image URL IRI."@en .
+
+hyf-app:HY_Catchment owl:equivalentClass hyf:HY_Catchment .
+hyf-app:HY_CatchmentDivide owl:equivalentClass hyf:HY_CatchmentDivide .
+hyf-app:HY_HydrometricNetwork skos:closeMatch hyf:HY_HydrometricNetwork .
+hyf-app:HY_HydrographicNetwork skos:closeMatch hyf:HY_HydrographicNetwork .
+hyf-app:HY_HydrometricFeature skos:closeMatch hyf:HY_HydrometricFeature .
+
+schema:governmentAgency
+    a owl:ObjectProperty ;
+    rdfs:range schema:GovernmentOrganization ;
+    skos:editorialNote "This is a property, not a class. Move it from the class inventory to the property inventory."@en .
+
+schema:type
+    owl:deprecated true ;
+    skos:editorialNote "Avoid using schema:type. Use rdf:type in RDF and @type in JSON-LD."@en .
+
+#################################################################
+# Inventory coverage for Schema.org and RDF/RDFS/OWL classes
+#################################################################
+
+schema:GovernmentOrganization
+    a owl:Class ;
+    rdfs:subClassOf schema:Organization .
+
+schema:Organization
+    a owl:Class ;
+    rdfs:subClassOf schema:Thing .
+
+schema:Person
+    a owl:Class ;
+    rdfs:subClassOf schema:Thing .
+
+schema:SearchAction
+    a owl:Class ;
+    rdfs:subClassOf schema:Action .
+
+schema:EntryPoint
+    a owl:Class ;
+    rdfs:subClassOf schema:Intangible .
+
+schema:ImageObject
+    a owl:Class ;
+    rdfs:subClassOf schema:MediaObject .
+
+schema:BreadcrumbList
+    a owl:Class ;
+    rdfs:subClassOf schema:ItemList .
+
+schema:ListItem
+    a owl:Class ;
+    rdfs:subClassOf schema:Intangible .
+
+schema:WebSite
+    a owl:Class ;
+    rdfs:subClassOf schema:CreativeWork .
+
+schema:WebPage
+    a owl:Class ;
+    rdfs:subClassOf schema:CreativeWork .
+
+schema:NewsArticle
+    a owl:Class ;
+    rdfs:subClassOf schema:Article .
+
+rdf:Property
+    a owl:Class ;
+    skos:editorialNote "RDF's built-in class of properties. Do not use it as a catch-all declaration for Geoconnex predicates; classify predicates as owl:ObjectProperty, owl:DatatypeProperty, or owl:AnnotationProperty where possible."@en .
+
+rdfs:Datatype
+    a owl:Class ;
+    rdfs:subClassOf rdfs:Class .
+
+rdfs:Class
+    a owl:Class .
+
+rdfs:ContainerMembershipProperty
+    a owl:Class ;
+    rdfs:subClassOf rdf:Property .
+
+rdf:List
+    a owl:Class .
+
+owl:TransitiveProperty
+    a owl:Class ;
+    rdfs:subClassOf owl:ObjectProperty .
+
+owl:SymmetricProperty
+    a owl:Class ;
+    rdfs:subClassOf owl:ObjectProperty .
+
+rdf:type
+    skos:editorialNote "RDF's built-in type predicate. It is intentionally not redeclared as a Geoconnex object or datatype property; use it directly for class membership."@en .
+
+#################################################################
+# Hydrologic feature alignment
+#################################################################
+
+hyf:HY_HydroFeature
+    rdfs:subClassOf geo:Feature ;
+    skos:closeMatch hyfo:WaterFeature .
+
+hyf:HY_Catchment
+    rdfs:subClassOf hyf:HY_HydroFeature .
+
+hyf:HY_WaterBody
+    rdfs:subClassOf hyf:HY_HydroFeature ,
+        hyfo:SurfaceWaterFeature .
+
+hyf:HY_FlowPath
+    rdfs:subClassOf hyf:HY_CatchmentRealization .
+
+hyf:HY_CatchmentDivide
+    rdfs:subClassOf hyf:HY_CatchmentRealization .
+
+hyf:HY_HydroLocation
+    rdfs:subClassOf geo:Feature ;
+    skos:editorialNote "Treat hydrolocations as geospatial features. Use GeoSPARQL geometry properties for precise location and HY_Features linear-reference properties for hydrologic network position."@en .
+
+hyf:HY_HydrometricNetwork
+    rdfs:subClassOf hyf:HY_HydrographicNetwork .
+
+hyf:HY_HydrographicNetwork
+    a owl:Class ;
+    rdfs:subClassOf hyf:HY_HydroFeature .
+
+hyf:HY_HydrometricFeature
+    rdfs:subClassOf hyf:HY_HydroFeature .
+
+hyf:downstreamWaterBody
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf nhdplusv2:downstreamWaterBodyTC ;
+    owl:inverseOf hyf:upstreamWaterBody ;
+    skos:editorialNote "Keep this as the immediate downstream relation. Use a separate transitive-closure property for reachability queries."@en .
+
+hyf:upstreamWaterBody
+    a owl:ObjectProperty ;
+    owl:inverseOf hyf:downstreamWaterBody .
+
+#################################################################
+# Spatial alignment
+#################################################################
+
+schema:Place
+    rdfs:subClassOf geo:Feature ;
+    skos:editorialNote "Use schema:Place for web discovery and GeoSPARQL geo:Feature/geo:Geometry for formal spatial reasoning."@en .
+
+sf:Point rdfs:subClassOf geo:Geometry .
+sf:LineString rdfs:subClassOf geo:Geometry .
+sf:Polygon rdfs:subClassOf geo:Geometry .
+sf:MultiPolygon rdfs:subClassOf geo:Geometry .
+sf:GeometryCollection rdfs:subClassOf geo:Geometry .
+
+geo:asWKT
+    a owl:DatatypeProperty ;
+    rdfs:domain geo:Geometry ;
+    rdfs:range geo:wktLiteral .
+
+geo:crs
+    a owl:ObjectProperty ;
+    rdfs:domain geo:Geometry .
+
+schema:geo
+    a owl:ObjectProperty ;
+    rdfs:domain schema:Place ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf ( schema:GeoCoordinates schema:GeoShape )
+    ] ;
+    skos:editorialNote "Use schema:geo directly for Schema.org-facing coordinate or shape summaries. Use geo:hasGeometry or geo:defaultGeometry for formal GeoSPARQL geometries."@en .
+
+schema:GeoCoordinates
+    skos:closeMatch sf:Point ;
+    skos:editorialNote "Do not make this equivalent to sf:Point; Schema.org coordinates are a lightweight web metadata shape, while Simple Features points are formal geometries."@en .
+
+schema:GeoShape
+    skos:closeMatch geo:Geometry .
+
+schema:latitude
+    a owl:DatatypeProperty ;
+    rdfs:domain schema:GeoCoordinates ;
+    rdfs:range xsd:decimal .
+
+schema:longitude
+    a owl:DatatypeProperty ;
+    rdfs:domain schema:GeoCoordinates ;
+    rdfs:range xsd:decimal .
+
+schema:elevation
+    a owl:DatatypeProperty ;
+    rdfs:range xsd:decimal .
+
+schema:polygon
+    a owl:DatatypeProperty ;
+    rdfs:domain schema:GeoShape ;
+    rdfs:range xsd:string ;
+    skos:editorialNote "Prefer geo:asWKT for machine spatial reasoning; keep schema:polygon for Schema.org compatibility."@en .
+
+schema:line
+    a owl:DatatypeProperty ;
+    rdfs:domain schema:GeoShape ;
+    rdfs:range xsd:string ;
+    skos:editorialNote "Prefer geo:asWKT for machine spatial reasoning; keep schema:line for Schema.org compatibility."@en .
+
+schema:coordinates
+    a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    skos:editorialNote "Prefer geo:asWKT or schema:latitude/schema:longitude where possible. schema:coordinates is useful as a lightweight fallback."@en .
+
+#################################################################
+# Dataset, catalog, and web metadata alignment
+#################################################################
+
+schema:Dataset
+    skos:closeMatch dcat:Dataset ;
+    skos:editorialNote "For open-data catalogs, type dataset resources as both schema:Dataset and dcat:Dataset rather than asserting global owl:equivalentClass."@en .
+
+schema:DataDownload
+    rdfs:subClassOf dcat:Distribution .
+
+schema:distribution
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcat:distribution ;
+    rdfs:domain schema:Dataset ;
+    rdfs:range schema:DataDownload .
+
+schema:contentUrl
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcat:downloadURL ;
+    rdfs:range rdfs:Resource ;
+    skos:editorialNote "Model content URLs as IRI objects when aligning to dcat:downloadURL. If a source emits URL strings, normalize them to IRIs during RDF generation."@en .
+
+schema:encodingFormat
+    a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    skos:closeMatch dcat:mediaType ;
+    skos:editorialNote "Schema.org encodingFormat is commonly a text media type or URL. Keep it as a datatype property for Geoconnex exports; add dcat:mediaType separately when using controlled media-type resources."@en .
+
+schema:publisher
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcterms:publisher .
+
+schema:provider
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasAttributedTo .
+
+schema:temporalCoverage
+    a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    skos:editorialNote "Schema.org temporalCoverage accepts flexible text, dates, and intervals. If the data can be normalized, also add dcterms:temporal with a typed PeriodOfTime node."@en .
+
+schema:url
+    a owl:ObjectProperty ;
+    rdfs:range rdfs:Resource ;
+    skos:editorialNote "Model URLs as IRI objects in RDF. If a source emits URL strings, normalize them to IRIs during RDF generation."@en .
+
+dcterms:conformsTo
+    a owl:ObjectProperty ;
+    rdfs:range dcterms:Standard .
+
+#################################################################
+# Observations, quantities, and units
+#################################################################
+
+schema:PropertyValue
+    skos:closeMatch qudt:QuantityValue ;
+    skos:editorialNote "Use schema:PropertyValue for web markup and QUDT QuantityValue for formal numeric value/unit modeling. Avoid global equivalence because Schema.org PropertyValue is broader."@en .
+
+schema:variableMeasured
+    a owl:ObjectProperty ;
+    rdfs:range geoconnex:MeasuredVariable .
+
+geoconnex:MeasuredVariable
+    a owl:Class ;
+    owl:unionOf ( schema:PropertyValue sosa:ObservableProperty qudt:QuantityKind ) .
+
+schema:measurementTechnique
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf sosa:usedProcedure .
+
+schema:measurementMethod
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf sosa:usedProcedure .
+
+schema:value
+    a owl:DatatypeProperty ;
+    rdfs:range rdfs:Literal ;
+    skos:closeMatch qudt:numericValue .
+
+schema:unitCode
+    a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    skos:closeMatch qudt:hasUnit ;
+    skos:editorialNote "When possible, use qudt:hasUnit with a QUDT unit IRI. Keep schema:unitCode for UCUM or Schema.org-compatible literals."@en .
+
+schema:unitText
+    a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    skos:editorialNote "Use schema:unitText only for human-readable unit labels. Add qudt:hasUnit when a controlled unit IRI is known."@en .
+
+schema:propertyID
+    a owl:DatatypeProperty ;
+    rdfs:subPropertyOf dcterms:identifier .
+
+qudt:hasUnit
+    a owl:ObjectProperty ;
+    rdfs:range qudt:Unit .
+
+qudt:hasQuantityKind
+    a owl:ObjectProperty ;
+    rdfs:range qudt:QuantityKind .
+
+ssn-system:frequency
+    a owl:ObjectProperty ;
+    skos:editorialNote "Use for sampling or operating frequency when the subject is an SSN/SOSA system, sensor, or procedure. Consider pairing with QUDT for numeric value and unit."@en .
+
+#################################################################
+# HY_Features linear reference terms
+#################################################################
+
+hyf:HY_IndirectPosition
+    a owl:Class ;
+    skos:editorialNote "This is a class-like HY_Features term. Move it from the property inventory to the class inventory if it appears as a property."@en .
+
+hyf:HY_DistanceFromReferent
+    a owl:Class ;
+    skos:editorialNote "This is a class-like HY_Features term. Move it from the property inventory to the class inventory if it appears as a property."@en .
+
+hyf:HY_DistanceDescription
+    a owl:Class ;
+    skos:editorialNote "This is a class-like HY_Features term. Move it from the property inventory to the class inventory if it appears as a property."@en .
+
+hyf:interpolative
+    a owl:DatatypeProperty ;
+    rdfs:domain hyf:HY_IndirectPosition ;
+    rdfs:range xsd:boolean .
+
+hyf:linearElement
+    a owl:ObjectProperty ;
+    rdfs:domain hyf:HY_IndirectPosition ;
+    rdfs:range hyf:HY_FlowPath .
+
+hyf:distanceDescription
+    a owl:ObjectProperty ;
+    rdfs:domain hyf:HY_IndirectPosition ;
+    rdfs:range hyf:HY_DistanceDescription .
+
+hyf:distanceExpression
+    a owl:ObjectProperty ;
+    rdfs:domain hyf:HY_DistanceDescription ;
+    rdfs:range hyf:HY_DistanceFromReferent .
+
+#################################################################
+# Lightweight annotations for common Schema.org fields
+#################################################################
+
+schema:name
+    a owl:AnnotationProperty .
+
+schema:description
+    a owl:AnnotationProperty .
