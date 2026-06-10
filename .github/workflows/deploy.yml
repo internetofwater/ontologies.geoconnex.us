@@ -53,8 +53,7 @@ jobs:
               g.serialize(
                   destination=outdir / jsonld.name,
                   format="json-ld",
-                  indent=2,
-                  auto_compact=True
+                  indent=2
               )
 
               xml = ttl.with_suffix(".xml")
@@ -64,6 +63,14 @@ jobs:
                   indent=2
               )
           EOF
+          perl -0777 -i -pe '
+            s#<a href="([^"]+)\.ttl" class="myButton right-align">\.ttl</a>#
+            <div class="right-align">
+              <a href="$1.ttl" class="myButton">.ttl</a>
+              <a href="$1.json" class="myButton">.json</a>
+              <a href="$1.xml" class="myButton">.xml</a>
+            </div>
+            #gs' ${{ env.OUTPUT_DIR }}/index.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
