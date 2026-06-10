@@ -1,0 +1,85 @@
+name: PyLODE to GitHub Pages
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+env:
+  OUTPUT_DIR: ./sal-gha
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build Pages
+        uses: vliz-be-opsci/pylode-to-pages@v0
+        with:
+          baseuri: https://w3id.org/sal/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          outfolder: ${{ env.OUTPUT_DIR }}
+
+      - name: Convert TTL to JSON-LD and XML
+        run: |
+          pip install rdflib
+          sudo chmod 777 ${{ env.OUTPUT_DIR }}
+          python <<'EOF'
+          from pathlib import Path
+          from rdflib import Graph
+
+          outdir = Path("${{ env.OUTPUT_DIR }}")
+          outdir.mkdir(parents=True, exist_ok=True)
+
+          for ttl in outdir.rglob("*.ttl"):
+              g = Graph()
+              g.parse(ttl, format="turtle")
+
+              jsonld = ttl.with_suffix(".json")
+              g.serialize(
+                  destination=outdir / jsonld.name,
+                  format="json-ld",
+                  indent=2,
+                  auto_compact=True
+              )
+
+              xml = ttl.with_suffix(".xml")
+              g.serialize(
+                  destination=outdir / xml.name,
+                  format="xml",
+                  indent=2
+              )
+          EOF
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.OUTPUT_DIR }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
