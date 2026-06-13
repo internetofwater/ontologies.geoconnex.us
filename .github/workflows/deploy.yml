@@ -31,7 +31,7 @@ jobs:
       - name: Build Pages
         uses: vliz-be-opsci/pylode-to-pages@v0
         with:
-          baseuri: https://w3id.org/sal/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          baseuri: https://${{ github.event.repository.name }}
           outfolder: ${{ env.OUTPUT_DIR }}
 
       - name: Convert TTL to JSON-LD and XML
