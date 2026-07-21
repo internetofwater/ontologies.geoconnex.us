@@ -18,7 +18,7 @@
 @prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://geoconnex.us/def/geoconnex_ontology>
+<https://geoconnex.us/def/geoconnex>
     a owl:Ontology ;
     dcterms:title "Geoconnex alignment recommendations"@en ;
     dcterms:description
