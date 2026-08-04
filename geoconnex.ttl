@@ -1,7 +1,7 @@
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix geo: <http://www.opengis.net/ont/geosparql#> .
-@prefix geoconnex: <https://geoconnex.us/def/> .
+@prefix geoconnex: <https://ontologies.geoconnex.us/geoconnex#> .
 @prefix hyf: <https://www.opengis.net/def/schema/hy_features/hyf/> .
 @prefix hyf-app: <https://www.opengis.net/def/appschema/hy_features/hyf/> .
 @prefix hyfo: <http://hyfo.spatialai.org/v1/hyfo#> .
@@ -18,7 +18,7 @@
 @prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://geoconnex.us/def/geoconnex>
+<https://ontologies.geoconnex.us/geoconnex>
     a owl:Ontology ;
     dcterms:title "Geoconnex alignment recommendations"@en ;
     dcterms:description
