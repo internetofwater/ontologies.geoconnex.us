@@ -6,6 +6,7 @@ from rdflib import Graph
 # trivial script to convert ttl to json-ld and write it to stdout
 # so that the geoconnex pipeline can consume it like a normal integration
 
+
 def main():
     current_dir = Path(__file__).parent
 
@@ -20,11 +21,17 @@ def main():
         # Serialize to JSON-LD
         jsonld = graph.serialize(format="json-ld")
 
-        # Re-encode as compact one-line JSON 
+        # rdflib emits expanded JSON-LD as a top-level array, but the Geoconnex bulk
+        # harvester expects each line to be a JSON object, so wrap it in @graph
+        doc = json.loads(jsonld)
+        if isinstance(doc, list):
+            doc = {"@graph": doc}
+
+        # Re-encode as compact one-line JSON
         # this is since rdflib doesn't support writing compact JSON
         # as far as I can tell
         compact = json.dumps(
-            json.loads(jsonld),
+            doc,
             separators=(",", ":"),
         )
 
