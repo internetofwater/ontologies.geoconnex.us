@@ -1,8 +1,9 @@
+This folder contains a following ontologies:
+
+- [geoconnex.ttl](/geoconnex.ttl): Geoconnex Alignment Ontology described [here](https://github.com/internetofwater/ontologies.geoconnex.us#geoconnex-alignment-recommendations)
+- [sawgraph-water-ontology.ttl](/sawgraph-water-ontology.ttl): SawGraph Alignment Ontology described [here](https://github.com/internetofwater/ontologies.geoconnex.us#sawgraph-integration)
+
 # Geoconnex Alignment Recommendations
-
-This folder contains a small alignment ontology:
-
-- `geoconnex_ontology.ttl`
 
 It turns the initial comparison of the Geoconnex class/property inventory against Schema.org and SawGraph into concrete Turtle axioms. The file is intentionally conservative: it recommends bridge axioms and cleanup notes without trying to replace SawGraph, HY_Features, GeoSPARQL, Schema.org, DCAT, SOSA/SSN, or QUDT.
 
