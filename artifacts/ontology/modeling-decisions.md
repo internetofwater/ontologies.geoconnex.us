@@ -12,7 +12,7 @@
 > class hierarchy. Use SKOS for classification and terminology alignment, and
 > use SHACL for validation.
 
-## How this document is organized
+## 🟦 How this document is organized
 
 This decision record uses the applicable parts of the
 [Diátaxis documentation framework](https://diataxis.fr/):
