@@ -1,0 +1,325 @@
+@prefix sf: <http://www.opengis.net/ont/sf#> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix kwg-ont: <http://stko-kwg.geog.ucsb.edu/lod/ontology/> .
+
+<http://stko-kwg.geog.ucsb.edu/lod/ontology/google-s2> rdf:type owl:Ontology ;
+                                                        terms:contributor "Shirly Stephen, Mitchell Faulk"@en ;
+                                                        terms:created "2024-06-20"@en ;
+                                                        terms:creator "The KnowWhereGraph Project"@en ;
+                                                        terms:description "This ontology supports the KnowWhereGraph"@en ;
+                                                        terms:title "Ontology for Google S2 Cells"@en ;
+                                                        owl:versionInfo "3.0"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/terms/contributor
+terms:contributor rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/created
+terms:created rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+terms:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+terms:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+terms:title rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/domainIncludes
+schema:domainIncludes rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/rangeIncludes
+schema:rangeIncludes rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+skos:definition rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#description
+skos:description rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#editorialNote
+skos:editorialNote rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#example
+skos:example rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#note
+skos:note rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#prefLabel
+skos:prefLabel rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation
+kwg-ont:spatialRelation rdf:type owl:ObjectProperty .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/vertexPolygon
+kwg-ont:vertexPolygon rdf:type owl:ObjectProperty ;
+                      rdfs:label "vertex polygon" .
+
+
+###  http://www.opengis.net/ont/geosparql#hasDefaultGeometry
+geo:hasDefaultGeometry rdf:type owl:ObjectProperty .
+
+
+###  http://www.opengis.net/ont/geosparql#hasGeometry
+geo:hasGeometry rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/cellID
+kwg-ont:cellID rdf:type owl:DatatypeProperty ;
+               rdfs:label "s2 cell ID" .
+
+
+###  http://www.opengis.net/ont/geosparql#asWKT
+geo:asWKT rdf:type owl:DatatypeProperty .
+
+
+###  http://www.opengis.net/ont/geosparql#hasMetricArea
+geo:hasMetricArea rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2
+kwg-ont:AdministrativeRegion_2 rdf:type owl:Class .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/Cell
+kwg-ont:Cell rdf:type owl:Class .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell
+kwg-ont:S2Cell rdf:type owl:Class ;
+               rdfs:subClassOf kwg-ont:Cell ,
+                               geo:Feature ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty geo:hasDefaultGeometry ;
+                                 owl:allValuesFrom geo:Geometry
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty geo:hasGeometry ;
+                                 owl:allValuesFrom geo:Geometry
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty geo:hasMetricArea ;
+                                 owl:allValuesFrom xsd:double
+                               ] ;
+               rdfs:comment "This class denotes S2 cells from the S2 library framework." ;
+               rdfs:label "S2 Cell" ;
+               skos:description """The S2 library defines a framework for decomposing the unit sphere into a hierarchy of cells. Each cell is a quadrilateral bounded by four geodesics. The top level of the hierarchy is obtained by projecting the six faces of a cube onto the unit sphere, and lower levels are obtained by subdividing each cell into four children recursively.
+
+Each cell in the hierarchy has a level, defined as the number of times the cell has been subdivided (starting with a face cell). Cells levels range from 0 to 30. The smallest cells at level 30 are called leaf cells; there are 6 * 430 of them in total, each about 1cm across on the Earth’s surface. (Details on the cell sizes at each level can be found on the S2 Cell Statistics page.)
+
+The S2 hierarchy is useful for spatial indexing and for approximating regions as a collection of cells. Cells can be used to represent both points and regions: points are generally represented as leaf cells, while regions are represented as collections of cells at any level(s).""" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level0
+kwg-ont:S2Cell_Level0 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 0)" ;
+                      skos:description "Avg Area: 85011012.19 km. sq." ,
+                                       "Level: 00" ,
+                                       "Max Area: 85011012.19 km. sq." ,
+                                       "Min Area: 85011012.19 km. sq." ,
+                                       "Number of cells: 6" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level1
+kwg-ont:S2Cell_Level1 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 1)" ;
+                      skos:description "Avg Area: 21252753.05 km. sq." ,
+                                       "Level: 01" ,
+                                       "Max Area: 21252753.05 km. sq." ,
+                                       "Min Area: 21252753.05 km. sq." ,
+                                       "Number of cells: 24" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level10
+kwg-ont:S2Cell_Level10 rdf:type owl:Class ;
+                       rdfs:subClassOf kwg-ont:S2Cell ;
+                       rdfs:label "S2 Cell (level 10)" ;
+                       skos:description "6M" ,
+                                        "Avg Area: 81.07 km. sq." ,
+                                        "Level: 10" ,
+                                        "Max Area: 102.03 km. sq." ,
+                                        "Min Area: 48.78 km. sq." .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level11
+kwg-ont:S2Cell_Level11 rdf:type owl:Class ;
+                       rdfs:subClassOf kwg-ont:S2Cell ;
+                       rdfs:label "S2 Cell (level 11)" ;
+                       skos:description "Avg Area: 20.27 km. sq." ,
+                                        "Level: 11" ,
+                                        "Max Area: 25.51 km. sq." ,
+                                        "Min Area: 12.18	 km. sq." ,
+                                        "Number of cells: 25M" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level12
+kwg-ont:S2Cell_Level12 rdf:type owl:Class ;
+                       rdfs:subClassOf kwg-ont:S2Cell ;
+                       rdfs:label "S2 Cell (level 12)" ;
+                       skos:description "Avg Area: 5.07 km. sq." ,
+                                        "Level: 12" ,
+                                        "Max Area: 6.38 km. sq." ,
+                                        "Min Area: 3.04 km. sq." ,
+                                        "Number of cells: 100M" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13
+kwg-ont:S2Cell_Level13 rdf:type owl:Class ;
+                       rdfs:subClassOf kwg-ont:S2Cell ;
+                       rdfs:label "S2 Cell (level 13)" ;
+                       skos:description "Avg Area: 1.27 km. sq." ,
+                                        "Level: 13" ,
+                                        "Max Area: 1.59 km. sq." ,
+                                        "Min Area: 0.76 km. sq." ,
+                                        "Number of cells: 402M" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level2
+kwg-ont:S2Cell_Level2 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 2)" ;
+                      skos:description "Avg Area: 5313188.26 km. sq." ,
+                                       "Level: 02" ,
+                                       "Max Area: 6026521.16 km. sq." ,
+                                       "Min Area: 4919708.23 km. sq." ,
+                                       "Number of cells: 96" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level3
+kwg-ont:S2Cell_Level3 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 3)" ;
+                      skos:description "Avg Area: 1328297.07 km. sq." ,
+                                       "Level: 03" ,
+                                       "Max Area: 1646455.50 km. sq." ,
+                                       "Min Area: 1055377.48 km. sq." ,
+                                       "Number of cells: 384" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level4
+kwg-ont:S2Cell_Level4 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 4)" ;
+                      skos:description "Avg Area: 332074.27 km. sq." ,
+                                       "Level: 04" ,
+                                       "Max Area: 413918.15 km. sq." ,
+                                       "Min Area: 231564.06 km. sq." ,
+                                       "Number of cells: 1536" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level5
+kwg-ont:S2Cell_Level5 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 5)" ;
+                      skos:description "Avg Area: 83018.57 km. sq." ,
+                                       "Level: 05" ,
+                                       "Max Area: 104297.91 km. sq." ,
+                                       "Min Area: 53798.67 km. sq." ,
+                                       "Number of cells: 6K" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level6
+kwg-ont:S2Cell_Level6 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 6)" ;
+                      skos:description "Avg Area: 20754.64 km. sq." ,
+                                       "Level: 06" ,
+                                       "Max Area: 26113.30 km. sq." ,
+                                       "Min Area: 12948.81 km. sq." ,
+                                       "Number of cells: 24K" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level7
+kwg-ont:S2Cell_Level7 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 7)" ;
+                      skos:description "Avg Area: 5188.66 km. sq." ,
+                                       "Level: 07" ,
+                                       "Max Area: 6529.09 km. sq." ,
+                                       "Min Area: 3175.44 km. sq." ,
+                                       "Number of cells: 98K" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level8
+kwg-ont:S2Cell_Level8 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 8)" ;
+                      skos:description "Avg Area: 1297.17 km. sq." ,
+                                       "Level: 08" ,
+                                       "Max Area:1632.45 km. sq." ,
+                                       "Min Area: 786.20 km. sq." ,
+                                       "Number of cells: 393K" .
+
+
+###  http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level9
+kwg-ont:S2Cell_Level9 rdf:type owl:Class ;
+                      rdfs:subClassOf kwg-ont:S2Cell ;
+                      rdfs:label "S2 Cell (level 9)" ;
+                      skos:description "Avg Area: 324.29 km. sq." ,
+                                       "Level: 09" ,
+                                       "Max Area: 408.12 km. sq." ,
+                                       "Min Area: 195.59 km. sq." ,
+                                       "Number of cells: 1573K" .
+
+
+###  http://www.opengis.net/ont/geosparql#Feature
+geo:Feature rdf:type owl:Class .
+
+
+###  http://www.opengis.net/ont/geosparql#Geometry
+geo:Geometry rdf:type owl:Class .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:Restriction ;
+  owl:onProperty kwg-ont:cellID ;
+  owl:allValuesFrom xsd:integer ;
+  rdfs:subClassOf kwg-ont:S2Cell
+] .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
