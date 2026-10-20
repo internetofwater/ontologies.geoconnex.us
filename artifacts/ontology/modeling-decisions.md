@@ -1,6 +1,34 @@
 # Modeling Decision: Representing HY_Features Figure 23
 
-## Decision summary
+| Decision metadata | Value |
+| --- | --- |
+| **Scope** | OGC HY_Features Figure 23 |
+| **Status** | Recommended |
+| **Primary model** | OWL/RDFS class hierarchy |
+| **Complementary models** | SKOS concept schemes and SHACL shapes |
+
+> [!IMPORTANT]
+> **Decision:** Model the formal feature types in Figure 23 as an OWL/RDFS
+> class hierarchy. Use SKOS for classification and terminology alignment, and
+> use SHACL for validation.
+
+## How this document is organized
+
+This decision record uses the applicable parts of the
+[Diátaxis documentation framework](https://diataxis.fr/):
+
+| Diátaxis mode | Use in this document | Go to |
+| --- | --- | --- |
+| **Explanation** | Understand why Figure 23 represents class semantics | [Why Figure 23 is a class hierarchy](#explanation-why-figure-23-is-a-class-hierarchy) |
+| **How-to guide** | Apply the decision to an ontology | [Apply the modeling decision](#how-to-apply-the-modeling-decision) |
+| **Reference** | Select the correct RDF mechanism | [Mechanism by modeling purpose](#reference-mechanism-by-modeling-purpose) |
+
+> [!NOTE]
+> Diátaxis tutorials are learning-oriented, end-to-end lessons. This modeling
+> decision does not include one because its purpose is to record and apply an
+> architectural decision, not teach RDF from first principles.
+
+## Decision at a glance
 
 Model the formal feature types in Figure 23 of OGC HY_Features as an OWL/RDFS class hierarchy. Use SKOS for code lists, user-facing classifications, and mappings to external terminology. Use SHACL to implement the UML cardinalities and constraints.
 
@@ -64,6 +92,10 @@ ex:catchment123
     a hyf:HY_Catchment,
       hyf:HY_HydroFeature .
 ```
+
+> [!TIP]
+> Type an instance with the most specific known class. The class hierarchy
+> allows a reasoner to infer its broader types.
 
 ### 3. Use SKOS for classification values
 
@@ -139,7 +171,10 @@ hyf:HY_Catchment
     skos:inScheme ex:HYFeatureTypeScheme .
 ```
 
-Use this pattern cautiously. `rdfs:subClassOf` and `skos:broader` express different relationships and must be maintained consistently. Dual typing should therefore be introduced only when the vocabulary view serves a clear user or application requirement.
+> [!CAUTION]
+> `rdfs:subClassOf` and `skos:broader` express different relationships and
+> must be maintained consistently. Introduce dual typing only when the
+> vocabulary view serves a clear user or application requirement.
 
 ## Sources
 
