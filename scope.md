@@ -57,85 +57,11 @@ Initial shared modules are expected to include:
 
 Detailed development procedures will be maintained separately from this scope document.
 
-## Initial Scope
-
-The first phase will model the related GeoConnex mainstems and NHDPlus flowlines collections as one vertical slice. Initial topics include:
-
-- Explicit feature types
-- Stable identifiers and names
-- Relationships between mainstems and flowlines
-- Immediate and transitive upstream network relationships
-- Headwater network features
-- Hydrography version and provenance
-- Alignment with HY_Features and GeoSPARQL
-- Mappings from current API and graph fields
-
-After this hydrographic-network slice, work will expand to HUC12, county, and state reference collections.
-
-Collection-specific competency questions will be maintained in `requirements/competency-questions.md`.
-
-## Intended Users
-
-The ontology and collection profiles are intended for:
-
-- GeoConnex developers, maintainers, and data publishers
-- Knowledge-graph and application developers
-- Hydrologists and water-data practitioners
-- Researchers integrating GeoConnex with other datasets
-- AI systems interpreting GeoConnex resources
-- Downstream projects such as NIDIS
-
-## Modeling Principles
-
-- **Reuse before invention:** Evaluate standards such as HY_Features, GeoSPARQL, SOSA/SSN, SKOS, PROV-O, OWL-Time, QUDT, and Dublin Core Terms before creating GeoConnex-specific terms.
-- **Stable semantics rather than API mirroring:** Model meaningful, reusable concepts rather than mechanically reproducing every API field.
-- **Shared semantics without collection silos:** Use collections as development units without creating isolated or conflicting ontologies.
-- **Lightweight axioms:** Keep the ontology understandable and reusable; place most collection-specific validation requirements in SHACL.
-- **Usable without reasoning:** Do not require GeoConnex or downstream users to operate an OWL reasoner.
-- **Explicit provenance:** Document the origin of derived mappings, crosswalks, and network relationships.
-- **Managed change:** Record effects on existing IRIs, data, APIs, transformations, and queries before adopting model changes.
-
 ## Relationship to the Existing Graph
 
 The work will distinguish between the current deployed representation and the proposed target model. A separate crosswalk will record current fields and predicates, proposed ontology terms, reused standards, required graph changes, compatibility mappings, and effects on existing queries.
 
 The crosswalk will be maintained in `inventory/current-graph-crosswalk.csv`. Significant modeling choices and their justifications will be maintained as decision records under `decisions/`.
-
-## Out of Scope for the Initial Phase
-
-The first phase will not:
-
-- Model every GeoConnex collection
-- Convert every API field into an ontology property
-- Create an independent ontology for every collection
-- Replace existing source ontologies
-- Require an OWL reasoner
-- Immediately migrate the complete deployed graph
-- Resolve every historical identifier and versioning issue
-- Define concepts used only by a single downstream project
-
-## Deliverables
-
-- Shared ontology modules
-- Collection profiles
-- Competency questions and SPARQL tests
-- Current-to-target graph crosswalk
-- Modeling-decision records
-- SHACL shapes
-- Example RDF records
-- Human-readable documentation
-- Graph-change and migration guidance
-
-## Success Criteria
-
-The initial phase will be successful when:
-
-1. Mainstems and NHDPlus flowlines have explicit, documented semantic types.
-2. Their identifiers and network relationships are represented consistently.
-3. Shared semantics are reused across both collection profiles.
-4. Competency questions are answered by tested example data and SPARQL queries.
-5. Required graph changes and compatibility paths are documented.
-6. The approach can be extended to additional reference collections.
 
 ## Open Decisions
 
